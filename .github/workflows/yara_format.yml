@@ -40,8 +40,11 @@ jobs:
 
             ymod = yaramod.Yaramod()
             for yara_file in pathlib.Path(".").glob("**/*.yar"):
-                yfile = ymod.parse_file(str(yara_file))
-                yara_file.write_text(yfile.text_formatted)
+                try:
+                    yfile = ymod.parse_file(str(yara_file))
+                    yara_file.write_text(yfile.text_formatted)
+                except Exception as e:
+                    print(f"Failed to format file {str(yara_file)}: {str(e)}")
 
       - name: Commit changes if any
         run: |
